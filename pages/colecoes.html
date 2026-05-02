@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections - BOTIQUE JOCHEVED</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .colecoes {
+            background-color: var(--white);
+            padding: 60px 0;
+        }
+
+        .colecoes h1 {
+            text-align: center;
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .colecoes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .colecao-card {
+            background-color: var(--light-bg);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .colecao-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .colecao-imagem {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .colecao-imagem.primavera {
+            background: linear-gradient(135deg, #ffc0cb, #ffb6c1);
+        }
+
+        .colecao-imagem.classico {
+            background: linear-gradient(135deg, #d4a574, #8b6f47);
+        }
+
+        .colecao-imagem.festa {
+            background: linear-gradient(135deg, #800080, #ffd700);
+        }
+
+        .colecao-imagem.casual {
+            background: linear-gradient(135deg, #87ceeb, #4682b4);
+        }
+
+        .colecao-imagem.premium {
+            background: linear-gradient(135deg, #000000, #d4a574);
+        }
+
+        .colecao-card h3 {
+            color: var(--primary-color);
+            padding: 20px 20px 10px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .colecao-card p {
+            color: var(--text-color);
+            padding: 0 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .colecao-card .descricao-completa {
+            padding: 20px;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .colecao-card .btn {
+            margin: 20px;
+            width: calc(100% - 40px);
+            text-align: center;
+        }
+
+        .colecao-detalhes {
+            background-color: var(--white);
+            padding: 30px;
+            margin-bottom: 50px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .colecao-detalhes h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .colecao-detalhes p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .destaque-badge {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER AND NAVIGATION -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span>📞 (11) 98765-4321</span>
+                        <span>📧 contato@jocheved.com.br</span>
+                    </div>
+                    <div class="header-links">
+                        <a href="#">Login</a>
+                        <a href="#">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <div class="container">
+                <a href="../index.html" class="logo">
+                    <img src="../assets/images/title.png" alt="JOCHEVED">
+                    <p class="tagline">Exclusive Women's Fashion</p>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="produtos.html">Products</a></li>
+                    <li><a href="colecoes.html">Collections</a></li>
+                    <li><a href="sobre.html">About</a></li>
+                    <li><a href="contato.html">Contact</a></li>
+                </ul>
+                <div class="header-icons">
+                    <button class="icon-btn" title="Search">🔍</button>
+                    <button class="icon-btn" title="Profile">👤</button>
+                    <a href="javascript:abrirCarrinho()" class="icon-btn" title="Cart">
+                        🛍️ <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb container">
+        <ul class="breadcrumb-list">
+            <li><a href="../index.html">Home</a></li>
+            <li>Collections</li>
+        </ul>
+    </div>
+
+    <!-- COLLECTIONS SECTION -->
+    <section class="colecoes">
+        <div class="container">
+            <h1>Our Collections</h1>
+
+            <!-- SPRING -->
+            <div class="colecao-detalhes fade-in-up" style="animation: fadeInUp 0.6s ease-out forwards; margin-bottom: 50px;">
+                <div class="destaque-badge">🌸 Spring Collection</div>
+                <h2>Spring Collection - Vibrant Colors</h2>
+                <p>Welcome to our Spring Collection, where vibrant colors and lightweight fabrics come together to create perfect looks for the season! This collection draws inspiration from blooming flowers and the gentle breezes of spring.</p>
+                <p>Special highlights:</p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Pastel tones and vibrant colors</li>
+                    <li>Light and breathable fabrics</li>
+                    <li>Fresh and modern designs</li>
+                    <li>Versatile pieces for any occasion</li>
+                </ul>
+                <button class="btn btn-primary" onclick="window.location.href='produtos.html'">View Full Collection</button>
+            </div>
+
+            <!-- CLASSIC -->
+            <div class="colecao-detalhes fade-in-up" style="animation: fadeInUp 0.6s ease-out forwards 0.1s; margin-bottom: 50px;">
+                <div class="destaque-badge">♦️ Classic Collection</div>
+                <h2>Classic Collection - Timeless Pieces</h2>
+                <p>Our classic pieces are the heart of the feminine wardrobe. Timeless designs that transcend trends and will always remain in style, ensuring elegance at every moment of your life.</p>
+                <p>Key features:</p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Sober and sophisticated colors</li>
+                    <li>Precise and well-fitted cuts</li>
+                    <li>Premium quality materials</li>
+                    <li>Versatility for multiple combinations</li>
+                </ul>
+                <button class="btn btn-primary" onclick="window.location.href='produtos.html'">View Full Collection</button>
+            </div>
+
+            <!-- PARTY -->
+            <div class="colecao-detalhes fade-in-up" style="animation: fadeInUp 0.6s ease-out forwards 0.2s; margin-bottom: 50px;">
+                <div class="destaque-badge">✨ Party Collection</div>
+                <h2>Party Collection - Total Sophistication</h2>
+                <p>We have prepared a special selection for your most special moments! The Party Collection brings together sophisticated and stunning looks for weddings, graduations, galas and events that demand extreme elegance.</p>
+                <p>Collection highlights:</p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Sophisticated long and midi dresses</li>
+                    <li>Shimmer details and embroidery</li>
+                    <li>Vibrant and composed colors</li>
+                    <li>Noble fabrics such as silk and satin</li>
+                </ul>
+                <button class="btn btn-primary" onclick="window.location.href='produtos.html'">View Full Collection</button>
+            </div>
+
+            <!-- CASUAL -->
+            <div class="colecao-detalhes fade-in-up" style="animation: fadeInUp 0.6s ease-out forwards 0.3s; margin-bottom: 50px;">
+                <div class="destaque-badge">👟 Casual Collection</div>
+                <h2>Casual Collection - Comfort and Style</h2>
+                <p>For ordinary days that deserve to be special! The Casual Collection combines absolute comfort with laid-back style, perfect for work, outings, get-togethers with friends and leisure moments without sacrificing elegance.</p>
+                <p>What you will find:</p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Quality denim with great fit</li>
+                    <li>Comfortable and stylish tops</li>
+                    <li>Practical combinations</li>
+                    <li>Durable and easy-care fabrics</li>
+                </ul>
+                <button class="btn btn-primary" onclick="window.location.href='produtos.html'">View Full Collection</button>
+            </div>
+
+            <!-- VISUAL CARDS GRID -->
+            <h2 style="text-align: center; margin: 50px 0 30px; color: var(--primary-color);">Explore Visually</h2>
+            <div class="colecoes-grid">
+                <div class="colecao-card">
+                    <div class="colecao-imagem primavera"></div>
+                    <h3>🌸 Spring</h3>
+                    <p>Vibrant colors and lightweight fabrics for the season</p>
+                    <button class="btn btn-secondary">View Collection</button>
+                </div>
+
+                <div class="colecao-card">
+                    <div class="colecao-imagem classico"></div>
+                    <h3>♦️ Classic</h3>
+                    <p>Timeless pieces for your wardrobe</p>
+                    <button class="btn btn-secondary">View Collection</button>
+                </div>
+
+                <div class="colecao-card">
+                    <div class="colecao-imagem festa"></div>
+                    <h3>✨ Party</h3>
+                    <p>Sophisticated looks for special occasions</p>
+                    <button class="btn btn-secondary">View Collection</button>
+                </div>
+
+                <div class="colecao-card">
+                    <div class="colecao-imagem casual"></div>
+                    <h3>👟 Casual</h3>
+                    <p>Comfort and style for everyday life</p>
+                    <button class="btn btn-secondary">View Collection</button>
+                </div>
+
+                <div class="colecao-card">
+                    <div class="colecao-imagem premium"></div>
+                    <h3>💎 Premium</h3>
+                    <p>Exclusive luxury and sophisticated pieces</p>
+                    <button class="btn btn-secondary">View Collection</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART MODAL -->
+    <div class="modal" id="carrinhoModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Your Cart</h2>
+            <div class="carrinho-items" id="carrinhoItems"></div>
+            <div class="carrinho-total">
+                <strong>Total: R$ <span id="totalPrice">0.00</span></strong>
+            </div>
+            <button class="btn btn-primary" onclick="irParaPagamento()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>JOCHEVED</h4>
+                    <p>Exclusive women's fashion with quality and style.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="produtos.html">Products</a></li>
+                        <li><a href="colecoes.html">Collections</a></li>
+                        <li><a href="sobre.html">About</a></li>
+                        <li><a href="contato.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="#">Returns & Exchanges</a></li>
+                        <li><a href="#">Shipping</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">📘 Facebook</a>
+                        <a href="#">📷 Instagram</a>
+                        <a href="#">🐦 Twitter</a>
+                        <a href="#">▶️ YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 BOTIQUE JOCHEVED. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

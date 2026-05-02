@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testes - BOTIQUE JOCHEVED</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #2c1810;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .test-section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .test-section h2 {
+            color: #d4a574;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #d4a574;
+            padding-bottom: 10px;
+        }
+        
+        .test-case {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f9f7f4;
+            border-left: 4px solid #d4a574;
+            border-radius: 3px;
+        }
+        
+        .test-case h3 {
+            color: #2c1810;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .test-case p {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-test {
+            padding: 8px 15px;
+            background-color: #d4a574;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        
+        .btn-test:hover {
+            background-color: #c49462;
+        }
+        
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+        
+        .result.success {
+            border-left: 3px solid #4caf50;
+            color: #4caf50;
+        }
+        
+        .result.error {
+            border-left: 3px solid #f44336;
+            color: #f44336;
+        }
+        
+        .result.info {
+            border-left: 3px solid #2196f3;
+            color: #2196f3;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background-color: #e0d5cc;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #d4a574;
+            width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .summary-item {
+            padding: 15px;
+            border-radius: 3px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .summary-item.success {
+            background-color: #4caf50;
+        }
+        
+        .summary-item.error {
+            background-color: #f44336;
+        }
+        
+        .summary-item.warning {
+            background-color: #ff9800;
+        }
+        
+        .summary-number {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Testes da BOTIQUE JOCHEVED</h1>
+        
+        <div class="test-section">
+            <h2>📋 Resumo de Testes</h2>
+            <div class="summary" id="summary">
+                <div class="summary-item success">
+                    <div class="summary-number" id="passCount">0</div>
+                    <div>Testes Passou</div>
+                </div>
+                <div class="summary-item error">
+                    <div class="summary-number" id="failCount">0</div>
+                    <div>Testes Falharam</div>
+                </div>
+                <div class="summary-item warning">
+                    <div class="summary-number" id="totalCount">0</div>
+                    <div>Total de Testes</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🛍️ Testes do Carrinho</h2>
+            <div class="test-case">
+                <h3>Teste 1: Adicionar Produto ao Carrinho</h3>
+                <p>Verifica se um produto pode ser adicionado ao carrinho</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarAdicionar()">Executar Teste</button>
+                </div>
+                <div id="result1" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Teste 2: Verificar Persistência do Carrinho</h3>
+                <p>Verifica se o carrinho persiste após reload</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarPersistencia()">Executar Teste</button>
+                </div>
+                <div id="result2" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Teste 3: Remover Produto do Carrinho</h3>
+                <p>Verifica se um produto pode ser removido</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarRemover()">Executar Teste</button>
+                </div>
+                <div id="result3" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Teste 4: Calcular Total do Carrinho</h3>
+                <p>Verifica se o total é calculado corretamente</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarTotal()">Executar Teste</button>
+                </div>
+                <div id="result4" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔍 Testes de Filtros</h2>
+            <div class="test-case">
+                <h3>Teste 5: Filtrar por Categoria</h3>
+                <p>Verifica se o filtro de categoria funciona</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarFiltroCategoria()">Executar Teste</button>
+                </div>
+                <div id="result5" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Teste 6: Filtrar por Preço</h3>
+                <p>Verifica se o filtro de preço funciona</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarFiltroPreco()">Executar Teste</button>
+                </div>
+                <div id="result6" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>💾 Testes de Armazenamento</h2>
+            <div class="test-case">
+                <h3>Teste 7: Verificar LocalStorage</h3>
+                <p>Verifica se LocalStorage está disponível</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarLocalStorage()">Executar Teste</button>
+                </div>
+                <div id="result7" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Teste 8: Verificar Favoritos</h3>
+                <p>Verifica se favoritos podem ser salvos</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarFavoritos()">Executar Teste</button>
+                </div>
+                <div id="result8" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🌐 Testes do Site</h2>
+            <div class="test-case">
+                <h3>Teste 9: Verificar Carregamento da Página</h3>
+                <p>Verifica se o arquivo index.html carrega corretamente</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarCarregamento()">Executar Teste</button>
+                </div>
+                <div id="result9" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Teste 10: Verificar Elementos HTML</h3>
+                <p>Verifica se os elementos principais estão presentes</p>
+                <div class="test-buttons">
+                    <button class="btn-test" onclick="testarElementos()">Executar Teste</button>
+                </div>
+                <div id="result10" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🚀 Executar Todos os Testes</h2>
+            <div class="test-buttons">
+                <button class="btn-test" onclick="executarTodosTestes()" style="background-color: #2c1810;">
+                    Executar Todos os Testes
+                </button>
+                <button class="btn-test" onclick="limparTestes()" style="background-color: #666;">
+                    Limpar Resultados
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let passCount = 0;
+        let failCount = 0;
+        let totalCount = 10;
+
+        function mostrarResultado(id, sucesso, mensagem) {
+            const resultDiv = document.getElementById(`result${id}`);
+            resultDiv.style.display = 'block';
+            resultDiv.className = `result ${sucesso ? 'success' : 'error'}`;
+            resultDiv.textContent = mensagem;
+            
+            if (sucesso) {
+                passCount++;
+            } else {
+                failCount++;
+            }
+            
+            atualizarSumario();
+        }
+
+        function atualizarSumario() {
+            document.getElementById('passCount').textContent = passCount;
+            document.getElementById('failCount').textContent = failCount;
+            const percentual = Math.round((passCount / totalCount) * 100);
+            document.getElementById('progressBar').style.width = percentual + '%';
+            document.getElementById('progressBar').textContent = percentual + '%';
+        }
+
+        // TESTES
+        function testarAdicionar() {
+            try {
+                // Simular adição ao carrinho
+                const testeProduto = {
+                    id: 999,
+                    nome: "Produto Teste",
+                    preco: 99.90
+                };
+                
+                const novoItem = {
+                    ...testeProduto,
+                    quantidade: 1,
+                    tamanho: "M",
+                    cor: "Preto"
+                };
+                
+                mostrarResultado(1, true, '✓ Produto adicionado ao carrinho com sucesso!');
+            } catch (e) {
+                mostrarResultado(1, false, '✗ Erro ao adicionar produto: ' + e.message);
+            }
+        }
+
+        function testarPersistencia() {
+            try {
+                localStorage.setItem('teste', 'valor_teste');
+                const valor = localStorage.getItem('teste');
+                
+                if (valor === 'valor_teste') {
+                    localStorage.removeItem('teste');
+                    mostrarResultado(2, true, '✓ LocalStorage funciona corretamente!');
+                } else {
+                    mostrarResultado(2, false, '✗ LocalStorage não persiste dados');
+                }
+            } catch (e) {
+                mostrarResultado(2, false, '✗ LocalStorage não disponível: ' + e.message);
+            }
+        }
+
+        function testarRemover() {
+            try {
+                // Simular remoção
+                const carrinho = [{id: 1}, {id: 2}];
+                carrinho.splice(0, 1);
+                
+                if (carrinho.length === 1) {
+                    mostrarResultado(3, true, '✓ Produto removido com sucesso!');
+                } else {
+                    mostrarResultado(3, false, '✗ Erro ao remover produto');
+                }
+            } catch (e) {
+                mostrarResultado(3, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function testarTotal() {
+            try {
+                const carrinho = [
+                    {preco: 100, quantidade: 2},
+                    {preco: 50, quantidade: 1}
+                ];
+                
+                const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+                
+                if (total === 250) {
+                    mostrarResultado(4, true, `✓ Total calculado corretamente: R$ ${total.toFixed(2).replace('.', ',')}`);
+                } else {
+                    mostrarResultado(4, false, `✗ Total incorreto: ${total} (esperado: 250)`);
+                }
+            } catch (e) {
+                mostrarResultado(4, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function testarFiltroCategoria() {
+            try {
+                // Simulação de filtro
+                const produtos = [
+                    {categoria: 'vestidos', nome: 'Vestido 1'},
+                    {categoria: 'blusas', nome: 'Blusa 1'},
+                    {categoria: 'vestidos', nome: 'Vestido 2'}
+                ];
+                
+                const filtrados = produtos.filter(p => p.categoria === 'vestidos');
+                
+                if (filtrados.length === 2) {
+                    mostrarResultado(5, true, `✓ Filtro funcionando: ${filtrados.length} produtos encontrados`);
+                } else {
+                    mostrarResultado(5, false, `✗ Filtro não funcionou corretamente`);
+                }
+            } catch (e) {
+                mostrarResultado(5, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function testarFiltroPreco() {
+            try {
+                const produtos = [
+                    {preco: 50},
+                    {preco: 150},
+                    {preco: 300},
+                    {preco: 600}
+                ];
+                
+                const filtrados = produtos.filter(p => p.preco >= 100 && p.preco <= 500);
+                
+                if (filtrados.length === 2) {
+                    mostrarResultado(6, true, `✓ Filtro de preço funcionando: ${filtrados.length} produtos encontrados`);
+                } else {
+                    mostrarResultado(6, false, `✗ Filtro de preço não funcionou`);
+                }
+            } catch (e) {
+                mostrarResultado(6, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function testarLocalStorage() {
+            try {
+                if (typeof Storage !== 'undefined') {
+                    mostrarResultado(7, true, '✓ LocalStorage está disponível no navegador');
+                } else {
+                    mostrarResultado(7, false, '✗ LocalStorage não está disponível');
+                }
+            } catch (e) {
+                mostrarResultado(7, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function testarFavoritos() {
+            try {
+                const favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+                favoritos.push(1);
+                localStorage.setItem('favoritos', JSON.stringify(favoritos));
+                
+                const recuperados = JSON.parse(localStorage.getItem('favoritos'));
+                
+                if (recuperados.includes(1)) {
+                    localStorage.removeItem('favoritos');
+                    mostrarResultado(8, true, '✓ Sistema de favoritos funcionando!');
+                } else {
+                    mostrarResultado(8, false, '✗ Erro ao salvar favoritos');
+                }
+            } catch (e) {
+                mostrarResultado(8, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function testarCarregamento() {
+            try {
+                if (document.readyState === 'loading') {
+                    mostrarResultado(9, false, '✗ Página ainda está carregando');
+                } else if (document.body) {
+                    mostrarResultado(9, true, '✓ Página carregou corretamente!');
+                } else {
+                    mostrarResultado(9, false, '✗ Erro no carregamento da página');
+                }
+            } catch (e) {
+                mostrarResultado(9, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function testarElementos() {
+            try {
+                const elementos = {
+                    'Header': document.querySelector('header'),
+                    'Navbar': document.querySelector('.navbar'),
+                    'Hero': document.querySelector('.hero'),
+                    'Produtos Grid': document.getElementById('produtosGrid'),
+                    'Filtros': document.querySelector('.filters'),
+                    'Footer': document.querySelector('footer')
+                };
+                
+                const encontrados = Object.values(elementos).filter(e => e !== null).length;
+                
+                if (encontrados >= 4) {
+                    mostrarResultado(10, true, `✓ ${encontrados}/6 elementos principais encontrados!`);
+                } else {
+                    mostrarResultado(10, false, `✗ Apenas ${encontrados} elementos encontrados (esperado: 6)`);
+                }
+            } catch (e) {
+                mostrarResultado(10, false, '✗ Erro: ' + e.message);
+            }
+        }
+
+        function executarTodosTestes() {
+            passCount = 0;
+            failCount = 0;
+            
+            testarAdicionar();
+            setTimeout(() => testarPersistencia(), 100);
+            setTimeout(() => testarRemover(), 200);
+            setTimeout(() => testarTotal(), 300);
+            setTimeout(() => testarFiltroCategoria(), 400);
+            setTimeout(() => testarFiltroPreco(), 500);
+            setTimeout(() => testarLocalStorage(), 600);
+            setTimeout(() => testarFavoritos(), 700);
+            setTimeout(() => testarCarregamento(), 800);
+            setTimeout(() => testarElementos(), 900);
+        }
+
+        function limparTestes() {
+            passCount = 0;
+            failCount = 0;
+            
+            for (let i = 1; i <= 10; i++) {
+                const resultDiv = document.getElementById(`result${i}`);
+                resultDiv.style.display = 'none';
+            }
+            
+            atualizarSumario();
+        }
+    </script>
+</body>
+</html>

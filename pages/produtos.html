@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - BOTIQUE JOCHEVED</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- HEADER AND NAVIGATION -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span>📞 (11) 98765-4321</span>
+                        <span>📧 contato@jocheved.com.br</span>
+                    </div>
+                    <div class="header-links">
+                        <a href="#">Login</a>
+                        <a href="#">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <div class="container">
+                <a href="../index.html" class="logo">
+                    <img src="../assets/images/title.png" alt="JOCHEVED">
+                    <p class="tagline">Exclusive Women's Fashion</p>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="produtos.html">Products</a></li>
+                    <li><a href="colecoes.html">Collections</a></li>
+                    <li><a href="sobre.html">About</a></li>
+                    <li><a href="contato.html">Contact</a></li>
+                </ul>
+                <div class="header-icons">
+                    <button class="icon-btn" title="Search">🔍</button>
+                    <button class="icon-btn" title="Profile">👤</button>
+                    <a href="#carrinho" class="icon-btn" title="Cart" style="text-decoration: none;">
+                        🛍️ <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb container">
+        <ul class="breadcrumb-list">
+            <li><a href="../index.html">Home</a></li>
+            <li>Products</li>
+        </ul>
+    </div>
+
+    <!-- PAGE TITLE -->
+    <section class="container">
+        <h1 class="page-title">Our Full Collection</h1>
+    </section>
+
+    <!-- FILTERS SECTION -->
+    <section class="filters-section">
+        <div class="container">
+            <h3>Filter Products</h3>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="categoria">Category:</label>
+                    <select id="categoria">
+                        <option value="">All</option>
+                        <option value="vestidos">Dresses</option>
+                        <option value="blusas">Tops</option>
+                        <option value="calcas">Pants</option>
+                        <option value="saias">Skirts</option>
+                        <option value="jaquetas">Jackets</option>
+                        <option value="acessorios">Accessories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="preco">Price:</label>
+                    <select id="preco">
+                        <option value="">All</option>
+                        <option value="0-100">Up to R$ 100</option>
+                        <option value="100-300">R$ 100 - R$ 300</option>
+                        <option value="300-500">R$ 300 - R$ 500</option>
+                        <option value="500">Above R$ 500</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="tamanho">Size:</label>
+                    <select id="tamanho">
+                        <option value="">All</option>
+                        <option value="pp">XS</option>
+                        <option value="p">S</option>
+                        <option value="m">M</option>
+                        <option value="g">L</option>
+                        <option value="gg">XL</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="cor">Color:</label>
+                    <select id="cor">
+                        <option value="">All</option>
+                        <option value="preto">Black</option>
+                        <option value="branco">White</option>
+                        <option value="vermelho">Red</option>
+                        <option value="azul">Blue</option>
+                        <option value="rosa">Pink</option>
+                    </select>
+                </div>
+                <button class="btn btn-secondary" onclick="aplicarFiltros()">Filter</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section class="produtos">
+        <div class="container">
+            <div class="produtos-grid" id="produtosGrid">
+                <!-- Products will be loaded via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CART MODAL -->
+    <div class="modal" id="carrinhoModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Your Cart</h2>
+            <div class="carrinho-items" id="carrinhoItems">
+                <!-- Cart items will appear here -->
+            </div>
+            <div class="carrinho-total">
+                <strong>Total: R$ <span id="totalPrice">0.00</span></strong>
+            </div>
+            <button class="btn btn-primary" onclick="irParaPagamento()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div class="modal" id="produtoModal">
+        <div class="modal-content produto-modal-content">
+            <span class="close">&times;</span>
+            <div class="produto-detalhes">
+                <div id="modalImg" style="width: 100%; height: 300px; background: linear-gradient(135deg, #e8d4c4, #d4a574); border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+                <div class="produto-info">
+                    <h2 id="modalNome"></h2>
+                    <p id="modalDescricao"></p>
+                    <div class="preco">
+                        <span id="modalPreco"></span>
+                    </div>
+                    <div class="opcoes">
+                        <div class="tamanho-select">
+                            <label>Size:</label>
+                            <select id="tamanhoSelect">
+                                <option>XS</option>
+                                <option>S</option>
+                                <option selected>M</option>
+                                <option>L</option>
+                                <option>XL</option>
+                            </select>
+                        </div>
+                        <div class="cor-select">
+                            <label>Color:</label>
+                            <select id="corSelect">
+                                <option>Black</option>
+                                <option>White</option>
+                                <option>Red</option>
+                                <option>Blue</option>
+                            </select>
+                        </div>
+                        <div class="quantidade-select">
+                            <label>Quantity:</label>
+                            <input type="number" id="quantidadeSelect" value="1" min="1" max="10">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="adicionarAoCarrinho()">Add to Cart</button>
+                    <button class="btn btn-secondary" onclick="adicionarAosFavoritos()" style="margin-left: 10px;">❤️ Favorites</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>JOCHEVED</h4>
+                    <p>Exclusive women's fashion with quality and style.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="produtos.html">Products</a></li>
+                        <li><a href="colecoes.html">Collections</a></li>
+                        <li><a href="sobre.html">About</a></li>
+                        <li><a href="contato.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="#">Returns & Exchanges</a></li>
+                        <li><a href="#">Shipping</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">📘 Facebook</a>
+                        <a href="#">📷 Instagram</a>
+                        <a href="#">🐦 Twitter</a>
+                        <a href="#">▶️ YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 BOTIQUE JOCHEVED. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

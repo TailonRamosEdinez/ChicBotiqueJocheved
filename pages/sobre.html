@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - BOTIQUE JOCHEVED</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <style>
+        .page-section {
+            padding: 60px 0;
+            background-color: var(--white);
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .sobre-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .sobre-texto {
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .sobre-texto p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .sobre-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--light-bg);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat h3 {
+            font-size: 36px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .stat p {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .valores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .valor-card {
+            padding: 30px;
+            background-color: var(--light-bg);
+            border-radius: 4px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .valor-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .valor-card p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .icon-grande {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .timeline {
+            margin-top: 50px;
+        }
+
+        .timeline-item {
+            margin-bottom: 40px;
+            padding-left: 50px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 3px var(--secondary-color);
+        }
+
+        .timeline-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .timeline-item p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .sobre-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .valores {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER AND NAVIGATION -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span>📞 (11) 98765-4321</span>
+                        <span>📧 contato@jocheved.com.br</span>
+                    </div>
+                    <div class="header-links">
+                        <a href="#">Login</a>
+                        <a href="#">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <div class="container">
+                <a href="../index.html" class="logo">
+                    <img src="../assets/images/title.png" alt="JOCHEVED">
+                    <p class="tagline">Exclusive Women's Fashion</p>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="produtos.html">Products</a></li>
+                    <li><a href="colecoes.html">Collections</a></li>
+                    <li><a href="sobre.html">About</a></li>
+                    <li><a href="contato.html">Contact</a></li>
+                </ul>
+                <div class="header-icons">
+                    <button class="icon-btn" title="Search">🔍</button>
+                    <button class="icon-btn" title="Profile">👤</button>
+                    <a href="javascript:abrirCarrinho()" class="icon-btn" title="Cart">
+                        🛍️ <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb container">
+        <ul class="breadcrumb-list">
+            <li><a href="../index.html">Home</a></li>
+            <li>About</li>
+        </ul>
+    </div>
+
+    <!-- ABOUT SECTION -->
+    <section class="page-section">
+        <div class="container">
+            <h1 class="page-title">About JOCHEVED</h1>
+
+            <div class="sobre-content fade-in-up" style="animation: fadeInUp 0.6s ease-out forwards;">
+                <div class="sobre-texto">
+                    <p><strong>JOCHEVED</strong> is a women's fashion boutique born with a clear purpose: to offer superior quality pieces that enhance the beauty and personality of every woman.</p>
+
+                    <p>With over <strong>15 years of experience</strong> in the fashion market, we have built our reputation through dedication to excellence, innovation and personalized service. Every piece in our catalog is carefully selected or produced with the finest materials available.</p>
+
+                    <p>We believe fashion is a form of personal expression. That is why we work to offer not just clothing, but style solutions that respect the individuality of our clients.</p>
+
+                    <p>Our mission is simple: <strong>to make every woman feel special, confident and beautiful</strong> when wearing our clothes. This means impeccable quality, timeless design and a genuine commitment to each customer's satisfaction.</p>
+                </div>
+
+                <div class="sobre-stats">
+                    <div class="stat">
+                        <h3>15+</h3>
+                        <p>Years of Experience</p>
+                    </div>
+                    <div class="stat">
+                        <h3>10,000+</h3>
+                        <p>Satisfied Customers</p>
+                    </div>
+                    <div class="stat">
+                        <h3>500+</h3>
+                        <p>Items in Catalog</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUES -->
+    <section class="page-section" style="background-color: var(--light-bg);">
+        <div class="container">
+            <h2 class="page-title">Our Values</h2>
+
+            <div class="valores fade-in-up" style="animation: fadeInUp 0.6s ease-out forwards;">
+                <div class="valor-card">
+                    <div class="icon-grande">💎</div>
+                    <h3>Quality</h3>
+                    <p>We are committed to the finest materials and finishes in every piece, ensuring durability and comfort.</p>
+                </div>
+
+                <div class="valor-card">
+                    <div class="icon-grande">🎨</div>
+                    <h3>Design</h3>
+                    <p>Innovation and creativity in every collection, always seeking to balance trends with timelessness.</p>
+                </div>
+
+                <div class="valor-card">
+                    <div class="icon-grande">❤️</div>
+                    <h3>Satisfaction</h3>
+                    <p>Your satisfaction is our priority. We offer personalized service and flexible exchange policies.</p>
+                </div>
+
+                <div class="valor-card">
+                    <div class="icon-grande">🌍</div>
+                    <h3>Responsibility</h3>
+                    <p>Commitment to sustainable and ethical practices in the production of our pieces.</p>
+                </div>
+
+                <div class="valor-card">
+                    <div class="icon-grande">🤝</div>
+                    <h3>Community</h3>
+                    <p>We value lasting relationships with our clients, building a community of empowered women.</p>
+                </div>
+
+                <div class="valor-card">
+                    <div class="icon-grande">✨</div>
+                    <h3>Excellence</h3>
+                    <p>In everything we do, we pursue excellence, from the selection to the delivery of each item.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="page-section">
+        <div class="container">
+            <h2 class="page-title">Our Story</h2>
+
+            <div class="timeline fade-in-up" style="animation: fadeInUp 0.6s ease-out forwards;">
+                <div class="timeline-item">
+                    <div class="timeline-year">2009</div>
+                    <h4>The Origin of JOCHEVED</h4>
+                    <p>It all began with a simple vision: to create a space where women could find clothes that make them feel good. The first store opened in São Paulo with a small catalog of carefully selected pieces.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2012</div>
+                    <h4>Expansion and Recognition</h4>
+                    <p>With growing sales and customer satisfaction, we expanded our catalog and opened new locations across the city of São Paulo.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2015</div>
+                    <h4>The Digital Era</h4>
+                    <p>We launched our online platform, allowing customers from all over Brazil to access our collections. Technology enabled us to reach an even wider audience.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2018</div>
+                    <h4>Our Own Lines</h4>
+                    <p>We began developing our own collections, combining the expertise we had acquired with the personal vision of our designers.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2021</div>
+                    <h4>Sustainability</h4>
+                    <p>We implemented more sustainable practices across our operations, reflecting our responsibility towards the future and the planet.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <h4>Present and Future</h4>
+                    <p>We continue to grow with the trust of over 10,000 satisfied customers, constantly innovating to offer the best shopping experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART MODAL -->
+    <div class="modal" id="carrinhoModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Your Cart</h2>
+            <div class="carrinho-items" id="carrinhoItems"></div>
+            <div class="carrinho-total">
+                <strong>Total: R$ <span id="totalPrice">0.00</span></strong>
+            </div>
+            <button class="btn btn-primary" onclick="irParaPagamento()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>JOCHEVED</h4>
+                    <p>Exclusive women's fashion with quality and style.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="produtos.html">Products</a></li>
+                        <li><a href="colecoes.html">Collections</a></li>
+                        <li><a href="sobre.html">About</a></li>
+                        <li><a href="contato.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="#">Returns & Exchanges</a></li>
+                        <li><a href="#">Shipping</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">📘 Facebook</a>
+                        <a href="#">📷 Instagram</a>
+                        <a href="#">🐦 Twitter</a>
+                        <a href="#">▶️ YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 BOTIQUE JOCHEVED. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BOTIQUE JOCHEVED - Exclusive Women's Fashion</title>
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="css/header.css" />
+        <link rel="stylesheet" href="css/footer.css" />
+        <link rel="stylesheet" href="css/components.css" />
+    </head>
+    <body>
+        <!-- HEADER E NAVEGAÇÃO -->
+        <header class="header">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-top-content">
+                        <div class="contact-info">
+                            <span>📞 (11) 98765-4321</span>
+                            <span>📧 contact@jocheved.com.br</span>
+                        </div>
+                        <div class="header-links">
+                            <a href="#login">Login</a>
+                            <a href="#register">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="navbar">
+                <div class="container">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/title.png" alt="JOCHEVED" />
+                    </a>
+                    <ul class="nav-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pages/produtos.html">Products</a></li>
+                        <li><a href="pages/colecoes.html">Collections</a></li>
+                        <li><a href="pages/sobre.html">About</a></li>
+                        <li><a href="pages/contato.html">Contact</a></li>
+                    </ul>
+                    <div class="header-icons">
+                        <button class="icon-btn" title="Search">🔍</button>
+                        <button class="icon-btn" title="Profile">👤</button>
+                        <a
+                            href="javascript:abrirCarrinho()"
+                            class="icon-btn"
+                            title="Cart"
+                        >
+                            🛍️ <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- SEÇÃO HERO -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h2>Elegance and Sophistication</h2>
+                <p>Discover your fashion at JOCHEVED</p>
+                <button
+                    class="btn btn-primary"
+                    onclick="window.location.href = 'pages/produtos.html'"
+                >
+                    View Collection
+                </button>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE PRODUTOS DESTAQUE -->
+        <section class="produtos" id="produtosDestaque">
+            <div class="container">
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 30px;
+                    "
+                >
+                    <h2 style="margin: 0">Featured Products</h2>
+                    <a
+                        href="pages/produtos.html"
+                        class="btn btn-secondary"
+                        style="white-space: nowrap"
+                        >🛍️ View All</a
+                    >
+                </div>
+                <div class="produtos-grid" id="produtosDestaqueGrid">
+                    <!-- Produtos serão carregados via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- MODAL DO CARRINHO -->
+        <div class="modal" id="carrinhoModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Your Cart</h2>
+                <div class="carrinho-items" id="carrinhoItems">
+                    <!-- Cart items will appear here -->
+                </div>
+                <div class="carrinho-total">
+                    <strong>Total: $ <span id="totalPrice">0.00</span></strong>
+                </div>
+                <button class="btn btn-primary" onclick="irParaPagamento()">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL DE PRODUTO -->
+        <div class="modal" id="produtoModal">
+            <div class="modal-content produto-modal-content">
+                <span class="close">&times;</span>
+                <div class="produto-detalhes">
+                    <img id="modalImg" src="" alt="Produto" />
+                    <div class="produto-info">
+                        <h2 id="modalNome"></h2>
+                        <p id="modalDescricao"></p>
+                        <div class="preco">
+                            <span id="modalPreco"></span>
+                        </div>
+                        <div class="opcoes">
+                            <div class="tamanho-select">
+                                <label>Size:</label>
+                                <select id="tamanhoSelect">
+                                    <option>PP</option>
+                                    <option>P</option>
+                                    <option selected>M</option>
+                                    <option>G</option>
+                                    <option>GG</option>
+                                </select>
+                            </div>
+                            <div class="cor-select">
+                                <label>Color:</label>
+                                <select id="corSelect">
+                                    <option>Preto</option>
+                                    <option>White</option>
+                                    <option>Red</option>
+                                    <option>Blue</option>
+                                </select>
+                            </div>
+                            <div class="quantidade-select">
+                                <label>Quantity:</label>
+                                <input
+                                    type="number"
+                                    id="quantidadeSelect"
+                                    value="1"
+                                    min="1"
+                                    max="10"
+                                />
+                            </div>
+                        </div>
+                        <button
+                            class="btn btn-primary"
+                            onclick="adicionarAoCarrinho()"
+                        >
+                            Add to Cart
+                        </button>
+                        <button
+                            class="btn btn-secondary"
+                            onclick="adicionarAosFavoritos()"
+                        >
+                            ❤️ Favorites
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABOUT SECTION -->
+        <section class="sobre" id="sobre">
+            <div class="container">
+                <h2>About JOCHEVED</h2>
+                <div class="sobre-content">
+                    <div class="sobre-texto">
+                        <p>
+                            JOCHEVED is a boutique specializing in exclusive
+                            women's fashion. With over 15 years of
+                            experience, we strive to offer high-quality pieces
+                            that enhance the beauty and personality of
+                            each woman.
+                        </p>
+                        <p>
+                            All of our products are carefully
+                            selected and produced with the best materials,
+                            ensuring comfort, durability, and style.
+                        </p>
+                        <p>
+                            Our mission is to make each client feel special
+                            and confident wearing our clothes.
+                        </p>
+                    </div>
+                    <div class="sobre-stats">
+                        <div class="stat">
+                            <h3>15+</h3>
+                            <p>Years of Experience</p>
+                        </div>
+                        <div class="stat">
+                            <h3>10.000+</h3>
+                            <p>Happy Clients</p>
+                        </div>
+                        <div class="stat">
+                            <h3>500+</h3>
+                            <p>Items in Catalog</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section
+            class="contato"
+            id="contato"
+            style="text-align: center; padding: 40px 0"
+        >
+            <div class="container">
+                <h2>Get in Touch</h2>
+                <div
+                    style="
+                        display: flex;
+                        gap: 40px;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                        margin-top: 30px;
+                    "
+                >
+                    <div style="flex: 0 1 auto">
+                        <h4>📞 Phone</h4>
+                        <p>
+                            <strong>(11) 98765-4321</strong><br /><small
+                                >WhatsApp</small
+                            >
+                        </p>
+                    </div>
+                    <div style="flex: 0 1 auto">
+                        <h4>📧 Email</h4>
+                        <p><strong>contact@jocheved.com.br</strong></p>
+                    </div>
+                    <div style="flex: 0 1 auto">
+                        <h4>📍 Location</h4>
+                        <p>
+                            <strong>São Paulo - SP</strong><br /><a
+                                href="pages/contato.html"
+                                style="color: var(--secondary-color)"
+                                >More Info</a
+                            >
+                        </p>
+                    </div>
+                </div>
+                <p style="margin-top: 20px; color: var(--text-color)">
+                    <a href="pages/contato.html" class="btn btn-primary"
+                        >Send Message</a
+                    >
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>JOCHEVED</h4>
+                        <p>Exclusive women's fashion with quality and style.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="pages/produtos.html">Products</a></li>
+                            <li><a href="pages/colecoes.html">Collections</a></li>
+                            <li><a href="pages/sobre.html">About</a></li>
+                            <li><a href="pages/contato.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Policies</h4>
+                        <ul>
+                            <li>
+                                <a href="pages/privacy.html"
+                                    >Privacy Policy</a
+                                >
+                            </li>
+                            <li>
+                                <a href="pages/terms.html">Terms of Service</a>
+                            </li>
+                            <li><a href="#">Exchanges & Returns</a></li>
+                            <li><a href="#">Shipping</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Follow Us</h4>
+                        <div class="social-links">
+                            <a href="#">📘 Facebook</a>
+                            <a href="#">📷 Instagram</a>
+                            <a href="#">🐦 Twitter</a>
+                            <a href="#">▶️ YouTube</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>
+                        &copy; 2026 BOTIQUE JOCHEVED. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="js/shared.js"></script>
+        <script src="js/products.js"></script>
+        <script src="js/cart.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            // Carregar produtos destaque no home
+            document.addEventListener("DOMContentLoaded", function () {
+                const grid = document.getElementById("produtosDestaqueGrid");
+                if (!grid) return;
+
+                // Mostrar apenas os 8 primeiros produtos ou todos se tiver menos
+                const produtosParaMostrar = produtos.slice(0, 8);
+
+                grid.innerHTML = "";
+                produtosParaMostrar.forEach((produto) => {
+                    const card = document.createElement("div");
+                    card.className = "produto-card";
+                    card.innerHTML = `
+                    <div class="produto-imagem">
+                        <div style="font-size: 80px; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;">
+                            ${getImagemHTML(produto.imagem)}
+                        </div>
+                        ${produto.badge ? `<span class="produto-badge">${produto.badge}</span>` : ""}
+                    </div>
+                    <div class="produto-descricao">
+                        <h3>${produto.nome}</h3>
+                        <p class="categoria">${produto.categoria}</p>
+                        <p class="descricao">${produto.descricao.substring(0, 60)}...</p>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0;">
+                            <span style="font-weight: bold; color: var(--product-primary);">R$ ${produto.preco.toFixed(2)}</span>
+                            <span>⭐ ${produto.avaliacao}</span>
+                        </div>
+                        <div class="produto-botoes">
+                            <button class="btn btn-primary" onclick="abrirDetalhes(${produto.id})" style="flex: 1; margin-right: 5px;">Ver Detalhes</button>
+                            <button class="btn btn-secondary" onclick="adicionarAoCarrinho(${produto.id}); event.preventDefault();" style="flex: 1;">🛒</button>
+                        </div>
+                    </div>
+                `;
+                    grid.appendChild(card);
+                });
+            });
+        </script>
+    </body>
+</html>
