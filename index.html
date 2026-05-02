@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,12 +16,42 @@
                 <div class="container">
                     <div class="header-top-content">
                         <div class="contact-info">
-                            <span>📞 (11) 98765-4321</span>
-                            <span>📧 contact@jocheved.com.br</span>
+                            <span data-i18n="contact-phone"
+                                >📞 (11) 98765-4321</span
+                            >
+                            <span
+                                >📧
+                                <span data-i18n="contact-email"
+                                    >contact@jocheved.com.br</span
+                                ></span
+                            >
                         </div>
                         <div class="header-links">
-                            <a href="#login">Login</a>
-                            <a href="#register">Sign Up</a>
+                            <a href="#login" data-i18n="login">Login</a>
+                            <a href="#register" data-i18n="register">Sign Up</a>
+                        </div>
+                        <div class="language-selector">
+                            <button
+                                class="language-btn active"
+                                data-lang="pt-BR"
+                                onclick="changeLanguage('pt-BR')"
+                            >
+                                PT-BR
+                            </button>
+                            <button
+                                class="language-btn"
+                                data-lang="en"
+                                onclick="changeLanguage('en')"
+                            >
+                                EN
+                            </button>
+                            <button
+                                class="language-btn"
+                                data-lang="es"
+                                onclick="changeLanguage('es')"
+                            >
+                                ES
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -33,19 +63,41 @@
                         <img src="assets/images/title.png" alt="JOCHEVED" />
                     </a>
                     <ul class="nav-menu">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pages/produtos.html">Products</a></li>
-                        <li><a href="pages/colecoes.html">Collections</a></li>
-                        <li><a href="pages/sobre.html">About</a></li>
-                        <li><a href="pages/contato.html">Contact</a></li>
+                        <li><a href="index.html" data-i18n="home">Home</a></li>
+                        <li>
+                            <a href="pages/produtos.html" data-i18n="products"
+                                >Products</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="pages/colecoes.html"
+                                data-i18n="collections"
+                                >Collections</a
+                            >
+                        </li>
+                        <li>
+                            <a href="pages/sobre.html" data-i18n="about"
+                                >About</a
+                            >
+                        </li>
+                        <li>
+                            <a href="pages/contato.html" data-i18n="contact"
+                                >Contact</a
+                            >
+                        </li>
                     </ul>
                     <div class="header-icons">
-                        <button class="icon-btn" title="Search">🔍</button>
-                        <button class="icon-btn" title="Profile">👤</button>
+                        <button class="icon-btn" data-i18n-title="search">
+                            🔍
+                        </button>
+                        <button class="icon-btn" data-i18n-title="profile">
+                            👤
+                        </button>
                         <a
                             href="javascript:abrirCarrinho()"
                             class="icon-btn"
-                            title="Cart"
+                            data-i18n-title="cart"
                         >
                             🛍️ <span class="cart-count">0</span>
                         </a>
@@ -57,11 +109,14 @@
         <!-- SEÇÃO HERO -->
         <section class="hero" id="home">
             <div class="hero-content">
-                <h2>Elegance and Exclusivity</h2>
-                <p>Discover your fashion at JOCHEVED</p>
+                <h2 data-i18n="hero-title">Elegance and Sophistication</h2>
+                <p data-i18n="hero-subtitle">
+                    Discover your fashion at JOCHEVED
+                </p>
                 <button
                     class="btn btn-primary"
                     onclick="window.location.href = 'pages/produtos.html'"
+                    data-i18n="view-collection"
                 >
                     View Collection
                 </button>
@@ -79,11 +134,14 @@
                         margin-bottom: 30px;
                     "
                 >
-                    <h2 style="margin: 0">Featured Products</h2>
+                    <h2 style="margin: 0" data-i18n="featured-products">
+                        Featured Products
+                    </h2>
                     <a
                         href="pages/produtos.html"
                         class="btn btn-secondary"
                         style="white-space: nowrap"
+                        data-i18n="view-all-products"
                         >🛍️ View All</a
                     >
                 </div>
@@ -97,14 +155,19 @@
         <div class="modal" id="carrinhoModal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Your Cart</h2>
+                <h2 data-i18n="cart">Your Cart</h2>
                 <div class="carrinho-items" id="carrinhoItems">
                     <!-- Cart items will appear here -->
                 </div>
                 <div class="carrinho-total">
-                    <strong>Total: $ <span id="totalPrice">0.00</span></strong>
+                    <strong data-i18n="total">Total:</strong> $
+                    <span id="totalPrice">0.00</span>
                 </div>
-                <button class="btn btn-primary" onclick="irParaPagamento()">
+                <button
+                    class="btn btn-primary"
+                    onclick="irParaPagamento()"
+                    data-i18n="checkout"
+                >
                     Proceed to Checkout
                 </button>
             </div>
@@ -115,7 +178,12 @@
             <div class="modal-content produto-modal-content">
                 <span class="close">&times;</span>
                 <div class="produto-detalhes">
-                    <img id="modalImg" src="" alt="Produto" />
+                    <img
+                        id="modalImg"
+                        src=""
+                        alt="Produto"
+                        data-i18n-alt="product-image-alt"
+                    />
                     <div class="produto-info">
                         <h2 id="modalNome"></h2>
                         <p id="modalDescricao"></p>
@@ -124,7 +192,7 @@
                         </div>
                         <div class="opcoes">
                             <div class="tamanho-select">
-                                <label>Size:</label>
+                                <label data-i18n="size">Size:</label>
                                 <select id="tamanhoSelect">
                                     <option>PP</option>
                                     <option>P</option>
@@ -134,16 +202,20 @@
                                 </select>
                             </div>
                             <div class="cor-select">
-                                <label>Color:</label>
+                                <label data-i18n="color">Color:</label>
                                 <select id="corSelect">
-                                    <option>Preto</option>
-                                    <option>White</option>
-                                    <option>Red</option>
-                                    <option>Blue</option>
+                                    <option data-i18n="color-black">
+                                        Preto
+                                    </option>
+                                    <option data-i18n="color-white">
+                                        White
+                                    </option>
+                                    <option data-i18n="color-red">Red</option>
+                                    <option data-i18n="color-blue">Blue</option>
                                 </select>
                             </div>
                             <div class="quantidade-select">
-                                <label>Quantity:</label>
+                                <label data-i18n="quantity">Quantity:</label>
                                 <input
                                     type="number"
                                     id="quantidadeSelect"
@@ -156,12 +228,14 @@
                         <button
                             class="btn btn-primary"
                             onclick="adicionarAoCarrinho()"
+                            data-i18n="add-to-cart"
                         >
                             Add to Cart
                         </button>
                         <button
                             class="btn btn-secondary"
                             onclick="adicionarAosFavoritos()"
+                            data-i18n="favorite"
                         >
                             ❤️ Favorites
                         </button>
@@ -173,38 +247,41 @@
         <!-- ABOUT SECTION -->
         <section class="sobre" id="sobre">
             <div class="container">
-                <h2>About JOCHEVED</h2>
+                <h2 data-i18n="about">About JOCHEVED</h2>
                 <div class="sobre-content">
                     <div class="sobre-texto">
-                        <p>
+                        <p data-i18n="about-text-1">
                             JOCHEVED is a boutique specializing in exclusive
-                            women's fashion. With over 15 years of
-                            experience, we strive to offer high-quality pieces
-                            that enhance the beauty and personality of
-                            each woman.
+                            women's fashion. With over 15 years of experience,
+                            we strive to offer high-quality pieces that enhance
+                            the beauty and personality of each woman.
                         </p>
-                        <p>
-                            All of our products are carefully
-                            selected and produced with the best materials,
-                            ensuring comfort, durability, and style.
+                        <p data-i18n="about-text-2">
+                            All of our products are carefully selected and
+                            produced with the best materials, ensuring comfort,
+                            durability, and style.
                         </p>
-                        <p>
-                            Our mission is to make each client feel special
-                            and confident wearing our clothes.
+                        <p data-i18n="about-text-3">
+                            Our mission is to make each client feel special and
+                            confident wearing our clothes.
                         </p>
                     </div>
                     <div class="sobre-stats">
                         <div class="stat">
-                            <h3>15+</h3>
-                            <p>Years of Experience</p>
+                            <h3 data-i18n="experience-years-num">15+</h3>
+                            <p data-i18n="experience-years-text">
+                                Years of Experience
+                            </p>
                         </div>
                         <div class="stat">
-                            <h3>10.000+</h3>
-                            <p>Happy Clients</p>
+                            <h3 data-i18n="happy-clients-num">10.000+</h3>
+                            <p data-i18n="happy-clients-text">Happy Clients</p>
                         </div>
                         <div class="stat">
-                            <h3>500+</h3>
-                            <p>Items in Catalog</p>
+                            <h3 data-i18n="catalog-items-num">500+</h3>
+                            <p data-i18n="catalog-items-text">
+                                Items in Catalog
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -218,7 +295,7 @@
             style="text-align: center; padding: 40px 0"
         >
             <div class="container">
-                <h2>Get in Touch</h2>
+                <h2 data-i18n="contact">Get in Touch</h2>
                 <div
                     style="
                         display: flex;
@@ -229,30 +306,45 @@
                     "
                 >
                     <div style="flex: 0 1 auto">
-                        <h4>📞 Phone</h4>
+                        <h4 data-i18n="contact-phone-label">📞 Phone</h4>
                         <p>
                             <strong>(11) 98765-4321</strong><br /><small
+                                data-i18n="contact-whatsapp"
                                 >WhatsApp</small
                             >
                         </p>
                     </div>
                     <div style="flex: 0 1 auto">
-                        <h4>📧 Email</h4>
-                        <p><strong>contact@jocheved.com.br</strong></p>
+                        <h4 data-i18n="contact-email-label">📧 Email</h4>
+                        <p>
+                            <strong
+                                ><span data-i18n="contact-email"
+                                    >contact@jocheved.com.br</span
+                                ></strong
+                            >
+                        </p>
                     </div>
                     <div style="flex: 0 1 auto">
-                        <h4>📍 Location</h4>
+                        <h4 data-i18n="contact-location-label">📍 Location</h4>
                         <p>
-                            <strong>São Paulo - SP</strong><br /><a
+                            <strong
+                                ><span data-i18n="contact-location-city"
+                                    >São Paulo - SP</span
+                                ></strong
+                            ><br /><a
                                 href="pages/contato.html"
                                 style="color: var(--secondary-color)"
+                                data-i18n="contact-more-info"
                                 >More Info</a
                             >
                         </p>
                     </div>
                 </div>
                 <p style="margin-top: 20px; color: var(--text-color)">
-                    <a href="pages/contato.html" class="btn btn-primary"
+                    <a
+                        href="pages/contato.html"
+                        class="btn btn-primary"
+                        data-i18n="send-message"
                         >Send Message</a
                     >
                 </p>
@@ -264,91 +356,329 @@
             <div class="container">
                 <div class="footer-content">
                     <div class="footer-section">
-                        <h4>JOCHEVED</h4>
-                        <p>Exclusive women's fashion with quality and style.</p>
+                        <h4 data-i18n="company-name">JOCHEVED</h4>
+                        <p data-i18n="footer-tagline">
+                            Exclusive women's fashion with quality and style.
+                        </p>
                     </div>
                     <div class="footer-section">
-                        <h4>Quick Links</h4>
+                        <h4 data-i18n="quick-links-title">Quick Links</h4>
                         <ul>
-                            <li><a href="pages/produtos.html">Products</a></li>
-                            <li><a href="pages/colecoes.html">Collections</a></li>
-                            <li><a href="pages/sobre.html">About</a></li>
-                            <li><a href="pages/contato.html">Contact</a></li>
+                            <li>
+                                <a
+                                    href="pages/produtos.html"
+                                    data-i18n="products"
+                                    >Products</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="pages/colecoes.html"
+                                    data-i18n="collections"
+                                    >Collections</a
+                                >
+                            </li>
+                            <li>
+                                <a href="pages/sobre.html" data-i18n="about"
+                                    >About</a
+                                >
+                            </li>
+                            <li>
+                                <a href="pages/contato.html" data-i18n="contact"
+                                    >Contact</a
+                                >
+                            </li>
                         </ul>
                     </div>
                     <div class="footer-section">
-                        <h4>Policies</h4>
+                        <h4 data-i18n="policies-title">Policies</h4>
                         <ul>
                             <li>
-                                <a href="pages/privacy.html"
+                                <a
+                                    href="pages/privacy.html"
+                                    data-i18n="privacy-policy"
                                     >Privacy Policy</a
                                 >
                             </li>
                             <li>
-                                <a href="pages/terms.html">Terms of Service</a>
+                                <a
+                                    href="pages/terms.html"
+                                    data-i18n="terms-of-service"
+                                    >Terms of Service</a
+                                >
                             </li>
-                            <li><a href="#">Exchanges & Returns</a></li>
-                            <li><a href="#">Shipping</a></li>
+                            <li>
+                                <a href="#" data-i18n="exchanges-returns"
+                                    >Exchanges & Returns</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#" data-i18n="shipping">Shipping</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="footer-section">
-                        <h4>Follow Us</h4>
+                        <h4 data-i18n="follow-us-title">Follow Us</h4>
                         <div class="social-links">
-                            <a href="#">📘 Facebook</a>
-                            <a href="#">📷 Instagram</a>
-                            <a href="#">🐦 Twitter</a>
-                            <a href="#">▶️ YouTube</a>
+                            <a href="#"
+                                >📘
+                                <span data-i18n="social-facebook"
+                                    >Facebook</span
+                                ></a
+                            >
+                            <a href="#"
+                                >📷
+                                <span data-i18n="social-instagram"
+                                    >Instagram</span
+                                ></a
+                            >
+                            <a href="#"
+                                >🐦
+                                <span data-i18n="social-twitter"
+                                    >Twitter</span
+                                ></a
+                            >
+                            <a href="#"
+                                >▶️
+                                <span data-i18n="social-youtube"
+                                    >YouTube</span
+                                ></a
+                            >
                         </div>
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p>
+                    <p data-i18n="footer-copyright">
                         &copy; 2026 BOTIQUE JOCHEVED. All rights reserved.
                     </p>
                 </div>
             </div>
         </footer>
 
+        <script src="js/translations.js"></script>
         <script src="js/shared.js"></script>
-        <script src="js/products.js"></script>
         <script src="js/cart.js"></script>
         <script src="js/main.js"></script>
+
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
         <script>
-            // Carregar produtos destaque no home
-            document.addEventListener("DOMContentLoaded", function () {
-                const grid = document.getElementById("produtosDestaqueGrid");
-                if (!grid) return;
+            // ============================================================
+            // 🔥 FIREBASE CONFIG
+            // ============================================================
+            const firebaseConfig = {
+                apiKey: "AIzaSyDX1RTbinmXDo4hGDgphHdCxZmtNG8RL74",
+                authDomain: "chic-butique-test.firebaseapp.com",
+                projectId: "chic-butique-test",
+                storageBucket: "chic-butique-test.firebasestorage.app",
+                messagingSenderId: "925538378396",
+                appId: "1:925538378396:web:659722f104ae1173f50359"
+            };
 
-                // Mostrar apenas os 8 primeiros produtos ou todos se tiver menos
-                const produtosParaMostrar = produtos.slice(0, 8);
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
 
-                grid.innerHTML = "";
-                produtosParaMostrar.forEach((produto) => {
-                    const card = document.createElement("div");
-                    card.className = "produto-card";
-                    card.innerHTML = `
+            // ============================================================
+            // RENDERIZAR CARD DE PRODUTO
+            // ============================================================
+            function criarCardProduto(produto, docId) {
+                const card = document.createElement("div");
+                card.className = "produto-card";
+
+                let imgConteudo;
+                if (produto.imagem && produto.imagem.startsWith("data:image")) {
+                    imgConteudo = `<img src="${produto.imagem}" alt="${produto.nome}"
+                        style="width:100%;height:100%;object-fit:cover;">`;
+                } else {
+                    imgConteudo = `<span style="font-size:80px;">${produto.imagem || "🛍️"}</span>`;
+                }
+
+                const badgeHTML = produto.badge
+                    ? `<span class="produto-badge">${produto.badge}</span>`
+                    : "";
+
+                const precoFormatado = Number(produto.preco).toFixed(2).replace(".", ",");
+
+                card.innerHTML = `
                     <div class="produto-imagem">
-                        <div style="font-size: 80px; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;">
-                            ${getImagemHTML(produto.imagem)}
+                        <div style="display:flex;align-items:center;justify-content:center;height:100%;width:100%;overflow:hidden;">
+                            ${imgConteudo}
                         </div>
-                        ${produto.badge ? `<span class="produto-badge">${produto.badge}</span>` : ""}
+                        ${badgeHTML}
                     </div>
                     <div class="produto-descricao">
                         <h3>${produto.nome}</h3>
                         <p class="categoria">${produto.categoria}</p>
-                        <p class="descricao">${produto.descricao.substring(0, 60)}...</p>
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0;">
-                            <span style="font-weight: bold; color: var(--product-primary);">R$ ${produto.preco.toFixed(2)}</span>
+                        <p class="descricao">${(produto.descricao || "").substring(0, 60)}...</p>
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin:10px 0;">
+                            <span style="font-weight:bold;color:var(--product-primary);">R$ ${precoFormatado}</span>
                             <span>⭐ ${produto.avaliacao}</span>
                         </div>
                         <div class="produto-botoes">
-                            <button class="btn btn-primary" onclick="abrirDetalhes(${produto.id})" style="flex: 1; margin-right: 5px;">Ver Detalhes</button>
-                            <button class="btn btn-secondary" onclick="adicionarAoCarrinho(${produto.id}); event.preventDefault();" style="flex: 1;">🛒</button>
+                            <button class="btn btn-primary"
+                                onclick="abrirDetalhesFirebase('${docId}')"
+                                style="flex:1;margin-right:5px;"
+                                data-i18n="see-details">Ver Detalhes</button>
+                            <button class="btn btn-secondary"
+                                onclick="adicionarAoCarrinhoFirebase('${docId}'); event.preventDefault();"
+                                style="flex:1;"
+                                title="Add to Cart">🛒</button>
                         </div>
                     </div>
                 `;
-                    grid.appendChild(card);
+                return card;
+            }
+
+            // ============================================================
+            // CARREGAR PRODUTOS DESTAQUE DO FIRESTORE
+            // ============================================================
+            async function carregarProdutosDestaque() {
+                const grid = document.getElementById("produtosDestaqueGrid");
+                if (!grid) return;
+
+                // Skeleton loading
+                grid.innerHTML = Array(4).fill(`
+                    <div class="produto-card" style="opacity:0.4;pointer-events:none;">
+                        <div class="produto-imagem" style="background:#eee;display:flex;align-items:center;justify-content:center;">
+                            <span style="font-size:60px;">⏳</span>
+                        </div>
+                        <div class="produto-descricao">
+                            <div style="height:18px;background:#eee;border-radius:4px;margin-bottom:8px;"></div>
+                            <div style="height:14px;background:#eee;border-radius:4px;width:60%;margin-bottom:8px;"></div>
+                            <div style="height:14px;background:#eee;border-radius:4px;margin-bottom:12px;"></div>
+                            <div style="height:36px;background:#eee;border-radius:4px;"></div>
+                        </div>
+                    </div>
+                `).join("");
+
+                try {
+                    const snapshot = await db.collection("produtos")
+                        .orderBy("criadoEm", "desc")
+                        .limit(8)
+                        .get();
+
+                    grid.innerHTML = "";
+
+                    if (snapshot.empty) {
+                        grid.innerHTML = `
+                            <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#999;">
+                                <div style="font-size:60px;margin-bottom:16px;">🛍️</div>
+                                <p style="font-size:18px;">Nenhum produto disponível ainda.</p>
+                                <p style="font-size:14px;">Volte em breve!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    snapshot.forEach((doc) => {
+                        const card = criarCardProduto(doc.data(), doc.id);
+                        grid.appendChild(card);
+                    });
+
+                    if (typeof applyTranslations === "function") applyTranslations();
+
+                } catch (error) {
+                    console.error("Firestore error:", error);
+                    grid.innerHTML = `
+                        <div style="grid-column:1/-1;text-align:center;padding:40px;color:#f44336;">
+                            <p>❌ Erro ao carregar produtos. Tente novamente mais tarde.</p>
+                            <small style="color:#999;">${error.message}</small>
+                        </div>
+                    `;
+                }
+            }
+
+            // ============================================================
+            // ABRIR DETALHES DO PRODUTO (busca do Firestore)
+            // ============================================================
+            async function abrirDetalhesFirebase(docId) {
+                try {
+                    const doc = await db.collection("produtos").doc(docId).get();
+                    if (!doc.exists) { alert("Produto não encontrado."); return; }
+
+                    const p = doc.data();
+
+                    const modalImg = document.getElementById("modalImg");
+                    if (modalImg) {
+                        if (p.imagem && p.imagem.startsWith("data:image")) {
+                            modalImg.src = p.imagem;
+                            modalImg.style.display = "block";
+                        } else {
+                            modalImg.style.display = "none";
+                        }
+                    }
+
+                    const nome = document.getElementById("modalNome");
+                    const desc = document.getElementById("modalDescricao");
+                    const preco = document.getElementById("modalPreco");
+                    const tamanhoSel = document.getElementById("tamanhoSelect");
+                    const corSel = document.getElementById("corSelect");
+
+                    if (nome) nome.textContent = p.nome;
+                    if (desc) desc.textContent = p.descricao;
+                    if (preco) preco.textContent = `R$ ${Number(p.preco).toFixed(2).replace(".", ",")}`;
+
+                    if (tamanhoSel && p.tamanhos) {
+                        tamanhoSel.innerHTML = p.tamanhos
+                            .map(t => `<option value="${t}">${t}</option>`)
+                            .join("");
+                    }
+
+                    if (corSel && p.cor) {
+                        corSel.innerHTML = `<option value="${p.cor}">${p.cor}</option>`;
+                    }
+
+                    window._produtoModalAtual = { ...p, docId };
+
+                    const modal = document.getElementById("produtoModal");
+                    if (modal) modal.style.display = "flex";
+
+                } catch (error) {
+                    console.error("Erro ao buscar produto:", error);
+                    alert("Erro ao carregar detalhes do produto.");
+                }
+            }
+
+            // ============================================================
+            // ADICIONAR AO CARRINHO (produto do Firestore)
+            // ============================================================
+            function adicionarAoCarrinhoFirebase(docId) {
+                db.collection("produtos").doc(docId).get().then((doc) => {
+                    if (!doc.exists) return;
+                    const p = doc.data();
+
+                    let carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
+                    const existente = carrinho.find(i => i.id === docId);
+                    if (existente) {
+                        existente.quantidade++;
+                    } else {
+                        carrinho.push({
+                            id: docId,
+                            nome: p.nome,
+                            preco: p.preco,
+                            imagem: p.imagem,
+                            tamanho: p.tamanhos ? p.tamanhos[0] : "M",
+                            quantidade: 1
+                        });
+                    }
+                    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+
+                    const contador = document.querySelector(".cart-count");
+                    if (contador) {
+                        const total = carrinho.reduce((acc, i) => acc + i.quantidade, 0);
+                        contador.textContent = total;
+                    }
                 });
+            }
+
+            // ============================================================
+            // INICIALIZAR
+            // ============================================================
+            document.addEventListener("DOMContentLoaded", function () {
+                if (typeof applyTranslations === "function") applyTranslations();
+                carregarProdutosDestaque();
             });
         </script>
     </body>
