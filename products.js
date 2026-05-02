@@ -97,7 +97,7 @@ function renderizarProdutos(lista) {
 
         // Imagem: base64 ou emoji
         let imgConteudo;
-        if (produto.imagem && produto.imagem.startsWith("data:image")) {
+        if (produto.imagem && (produto.imagem.startsWith("http") || produto.imagem.startsWith("data:image"))) {
             imgConteudo = `<img src="${produto.imagem}" alt="${produto.nome}"
                 style="width:100%;height:100%;object-fit:cover;">`;
         } else {
@@ -150,7 +150,7 @@ async function abrirDetalhes(docId) {
         // Preencher imagem
         const modalImg = document.getElementById("modalImg");
         if (modalImg) {
-            if (produto.imagem && produto.imagem.startsWith("data:image")) {
+            if (produto.imagem && (produto.imagem.startsWith("http") || produto.imagem.startsWith("data:image"))) {
                 modalImg.src = produto.imagem;
                 modalImg.style.display = "block";
                 modalImg.style.fontSize = "";
