@@ -165,6 +165,12 @@
                 transform: translateY(-2px);
             }
 
+            .submit-btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+            }
+
             .success-message {
                 display: none;
                 background-color: #4caf50;
@@ -288,6 +294,75 @@
                 text-align: center;
             }
 
+            /* Firebase status indicator */
+            .firebase-status {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                background: #e8f5e9;
+                color: #2e7d32;
+                font-weight: 600;
+            }
+
+            .firebase-status.error {
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            .firebase-status .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #4caf50;
+                animation: pulse 1.5s infinite;
+            }
+
+            .firebase-status.error .dot {
+                background: #f44336;
+                animation: none;
+            }
+
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.4; }
+            }
+
+            .loading-overlay {
+                display: none;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background: rgba(0,0,0,0.4);
+                z-index: 9999;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                color: white;
+                font-size: 18px;
+                font-weight: 600;
+                gap: 12px;
+            }
+
+            .loading-overlay.active {
+                display: flex;
+            }
+
+            .spinner {
+                width: 48px;
+                height: 48px;
+                border: 5px solid rgba(255,255,255,0.3);
+                border-top-color: white;
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
             @media (max-width: 768px) {
                 .admin-container {
                     margin: 20px;
@@ -305,6 +380,13 @@
         </style>
     </head>
     <body>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <span id="loadingText">Salvando no Firebase...</span>
+        </div>
+
         <!-- HEADER E NAVEGAÇÃO -->
         <header class="header">
             <div class="header-top">
@@ -370,7 +452,12 @@
             <!-- PAINEL ADMIN -->
             <div class="admin-panel" id="adminPanel">
                 <div class="admin-header">
-                    <h2>👔 Manage Products</h2>
+                    <div>
+                        <h2>👔 Manage Products</h2>
+                        <span class="firebase-status" id="firebaseStatus">
+                            <span class="dot"></span> Firebase Connected
+                        </span>
+                    </div>
                     <button class="logout-btn" onclick="logoutAdmin()">
                         Logout
                     </button>
@@ -386,9 +473,7 @@
 
                 <!-- FORMULÁRIO DE ADICIONAR PRODUTO -->
                 <form id="formProduto" onsubmit="adicionarProdutoAdmin(event)">
-                    <h3
-                        style="color: var(--primary-color); margin-bottom: 20px"
-                    >
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px">
                         📦 New Product
                     </h3>
 
@@ -420,9 +505,7 @@
                         <div class="form-group">
                             <label for="categoriaProduto">Category *</label>
                             <select id="categoriaProduto" required>
-                                <option value="">
-                                    Select a category
-                                </option>
+                                <option value="">Select a category</option>
                                 <option value="vestidos">Dresses</option>
                                 <option value="blusas">Blouses</option>
                                 <option value="calcas">Pants</option>
@@ -444,47 +527,30 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group upload-input-group">
-                            <label for="imagemProduto"
-                                >Product Image *</label
-                            >
-                            <input
-                                type="file"
-                                id="imagemProduto"
-                                class="file-input"
-                                accept="image/*"
-                            />
-                            <button
-                                type="button"
-                                class="upload-btn"
-                                onclick="
-                                    document
-                                        .getElementById('imagemProduto')
-                                        .click()
-                                "
-                            >
-                                📤 Select Image
-                            </button>
-                            <small
-                                style="
-                                    display: block;
-                                    margin-top: 5px;
-                                    color: #666;
-                                "
-                                >Formats: JPG, PNG, WebP</small
-                            >
+                        <div class="form-group image-upload-wrapper" style="display: block;">
+                            <div class="form-group upload-input-group">
+                                <label for="imagemProduto">Product Image *</label>
+                                <input
+                                    type="file"
+                                    id="imagemProduto"
+                                    class="file-input"
+                                    accept="image/*"
+                                />
+                                <button
+                                    type="button"
+                                    class="upload-btn"
+                                    onclick="document.getElementById('imagemProduto').click()"
+                                >
+                                    📤 Select Image
+                                </button>
+                                <small style="display: block; margin-top: 5px; color: #666;">
+                                    Formats: JPG, PNG, WebP (max 2MB)
+                                </small>
+                            </div>
                         </div>
 
                         <div style="flex: 1">
-                            <label
-                                style="
-                                    display: block;
-                                    font-weight: 600;
-                                    color: var(--primary-color);
-                                    margin-bottom: 8px;
-                                "
-                                >Preview</label
-                            >
+                            <label style="display: block; font-weight: 600; color: var(--primary-color); margin-bottom: 8px;">Preview</label>
                             <div class="image-preview" id="imagePreview">
                                 <div class="image-preview-empty">📸</div>
                             </div>
@@ -493,9 +559,7 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="avaliacaoProduto"
-                                >Rating (0-5) *</label
-                            >
+                            <label for="avaliacaoProduto">Rating (0-5) *</label>
                             <input
                                 type="number"
                                 id="avaliacaoProduto"
@@ -521,70 +585,24 @@
                         <label>Available Sizes *</label>
                         <div class="tamanhos-list">
                             <div class="tamanho-checkbox">
-                                <input
-                                    type="checkbox"
-                                    id="tamanho-pp"
-                                    name="tamanho"
-                                    value="PP"
-                                />
-                                <label
-                                    for="tamanho-pp"
-                                    style="margin: 0; cursor: pointer"
-                                    >PP</label
-                                >
+                                <input type="checkbox" id="tamanho-pp" name="tamanho" value="PP" />
+                                <label for="tamanho-pp" style="margin: 0; cursor: pointer">PP</label>
                             </div>
                             <div class="tamanho-checkbox">
-                                <input
-                                    type="checkbox"
-                                    id="tamanho-p"
-                                    name="tamanho"
-                                    value="P"
-                                />
-                                <label
-                                    for="tamanho-p"
-                                    style="margin: 0; cursor: pointer"
-                                    >P</label
-                                >
+                                <input type="checkbox" id="tamanho-p" name="tamanho" value="P" />
+                                <label for="tamanho-p" style="margin: 0; cursor: pointer">P</label>
                             </div>
                             <div class="tamanho-checkbox">
-                                <input
-                                    type="checkbox"
-                                    id="tamanho-m"
-                                    name="tamanho"
-                                    value="M"
-                                    checked
-                                />
-                                <label
-                                    for="tamanho-m"
-                                    style="margin: 0; cursor: pointer"
-                                    >M</label
-                                >
+                                <input type="checkbox" id="tamanho-m" name="tamanho" value="M" checked />
+                                <label for="tamanho-m" style="margin: 0; cursor: pointer">M</label>
                             </div>
                             <div class="tamanho-checkbox">
-                                <input
-                                    type="checkbox"
-                                    id="tamanho-g"
-                                    name="tamanho"
-                                    value="G"
-                                />
-                                <label
-                                    for="tamanho-g"
-                                    style="margin: 0; cursor: pointer"
-                                    >G</label
-                                >
+                                <input type="checkbox" id="tamanho-g" name="tamanho" value="G" />
+                                <label for="tamanho-g" style="margin: 0; cursor: pointer">G</label>
                             </div>
                             <div class="tamanho-checkbox">
-                                <input
-                                    type="checkbox"
-                                    id="tamanho-gg"
-                                    name="tamanho"
-                                    value="GG"
-                                />
-                                <label
-                                    for="tamanho-gg"
-                                    style="margin: 0; cursor: pointer"
-                                    >GG</label
-                                >
+                                <input type="checkbox" id="tamanho-gg" name="tamanho" value="GG" />
+                                <label for="tamanho-gg" style="margin: 0; cursor: pointer">GG</label>
                             </div>
                         </div>
                     </div>
@@ -600,15 +618,17 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="submit-btn">
+                    <button type="submit" class="submit-btn" id="btnSubmit">
                         ➕ Add Product
                     </button>
                 </form>
 
                 <!-- LISTA DE PRODUTOS -->
                 <div class="produtos-lista">
-                    <h3>📊 Registered Products</h3>
-                    <div id="produtosList"></div>
+                    <h3>📊 Registered Products <span id="contadorProdutos" style="font-size:14px;font-weight:400;color:#999;"></span></h3>
+                    <div id="produtosList">
+                        <p style="text-align:center;color:#999;">Loading products...</p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -623,18 +643,89 @@
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p>
-                        &copy; 2026 BOTIQUE JOCHEVED. All rights reserved.
-                    </p>
+                    <p>&copy; 2026 BOTIQUE JOCHEVED. All rights reserved.</p>
                 </div>
             </div>
         </footer>
 
-        <script src="js/shared.js"></script>
-        <script>
-            let imagemUploadada = null; // Armazenar imagem em base64
+        <!-- ============================================================
+             FIREBASE SDK (v9 compat - funciona como script tag normal)
+             ============================================================ -->
+        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-            // Event listener para upload de imagem
+        <script src="js/shared.js"></script>
+
+        <script>
+            // ============================================================
+            // 🔥 CONFIGURAÇÃO DO FIREBASE
+            // Substitua os valores abaixo pelas suas credenciais públicas
+            // do Firebase Console → Configurações do Projeto → Seus apps
+            // ============================================================
+            const firebaseConfig = {
+                apiKey: "SUA_API_KEY_AQUI",
+                authDomain: "chic-butique-test.firebaseapp.com",
+                projectId: "chic-butique-test",
+                storageBucket: "chic-butique-test.appspot.com",
+                messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+                appId: "SEU_APP_ID"
+            };
+
+            // Inicializar Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            const produtosCollection = db.collection("produtos");
+
+            // ============================================================
+            // VARIÁVEIS GLOBAIS
+            // ============================================================
+            let imagemUploadada = null;
+            let unsubscribeProdutos = null; // listener em tempo real
+
+            // ============================================================
+            // UTILITÁRIOS DE UI
+            // ============================================================
+            function showLoading(texto = "Saving to Firebase...") {
+                document.getElementById("loadingText").textContent = texto;
+                document.getElementById("loadingOverlay").classList.add("active");
+                document.getElementById("btnSubmit").disabled = true;
+            }
+
+            function hideLoading() {
+                document.getElementById("loadingOverlay").classList.remove("active");
+                document.getElementById("btnSubmit").disabled = false;
+            }
+
+            function showSuccess(msg = "✅ Product added successfully!") {
+                const el = document.getElementById("successMessage");
+                el.textContent = msg;
+                el.style.display = "block";
+                document.getElementById("errorMessage").style.display = "none";
+                setTimeout(() => { el.style.display = "none"; }, 3500);
+            }
+
+            function showError(msg = "❌ An error occurred!") {
+                const el = document.getElementById("errorMessage");
+                el.textContent = msg;
+                el.style.display = "block";
+                document.getElementById("successMessage").style.display = "none";
+                setTimeout(() => { el.style.display = "none"; }, 4000);
+            }
+
+            function setFirebaseStatus(ok) {
+                const el = document.getElementById("firebaseStatus");
+                if (ok) {
+                    el.className = "firebase-status";
+                    el.innerHTML = '<span class="dot"></span> Firebase Connected';
+                } else {
+                    el.className = "firebase-status error";
+                    el.innerHTML = '<span class="dot"></span> Firebase Error';
+                }
+            }
+
+            // ============================================================
+            // IMAGEM: upload e preview
+            // ============================================================
             document.addEventListener("DOMContentLoaded", function () {
                 verificarLoginAdmin();
 
@@ -642,79 +733,67 @@
                 if (inputImagem) {
                     inputImagem.addEventListener("change", function (e) {
                         const file = e.target.files[0];
-                        if (file) {
-                            // Validar tipo de arquivo
-                            if (!file.type.startsWith("image/")) {
-                                alert(
-                                    "❌ Please select a valid image file!",
-                                );
-                                this.value = "";
-                                return;
-                            }
+                        if (!file) return;
 
-                            // Validar tamanho (máx 2MB)
-                            if (file.size > 2 * 1024 * 1024) {
-                                alert("❌ Image too large! Maximum 2MB.");
-                                this.value = "";
-                                return;
-                            }
-
-                            // Converter para base64
-                            const reader = new FileReader();
-                            reader.onload = function (event) {
-                                imagemUploadada = event.target.result; // Salvar base64
-
-                                // Exibir preview
-                                const preview =
-                                    document.getElementById("imagePreview");
-                                preview.innerHTML = `<img src="${imagemUploadada}" alt="Preview">`;
-                            };
-                            reader.readAsDataURL(file);
+                        if (!file.type.startsWith("image/")) {
+                            alert("❌ Please select a valid image file!");
+                            this.value = "";
+                            return;
                         }
+
+                        if (file.size > 2 * 1024 * 1024) {
+                            alert("❌ Image too large! Maximum 2MB.");
+                            this.value = "";
+                            return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = function (event) {
+                            imagemUploadada = event.target.result;
+                            const preview = document.getElementById("imagePreview");
+                            preview.innerHTML = `<img src="${imagemUploadada}" alt="Preview">`;
+                        };
+                        reader.readAsDataURL(file);
                     });
                 }
             });
 
-            // Check if admin is logged in
+            // ============================================================
+            // AUTENTICAÇÃO ADMIN (simples, por senha local)
+            // ============================================================
             function verificarLoginAdmin() {
                 const isAdmin = localStorage.getItem("adminLogado") === "true";
                 if (isAdmin) {
-                    document.getElementById("loginSection").style.display =
-                        "none";
-                    document.getElementById("adminPanel").style.display =
-                        "block";
-                    carregarProdutosLista();
+                    document.getElementById("loginSection").style.display = "none";
+                    document.getElementById("adminPanel").style.display = "block";
+                    iniciarListenerProdutos();
                 }
             }
 
-            // Admin Login
             function loginAdmin(event) {
                 event.preventDefault();
                 const senha = document.getElementById("senhaAdmin").value;
 
-                // Default password: admin123 (in production, use secure backend!)
                 if (senha === "admin123") {
                     localStorage.setItem("adminLogado", "true");
-                    document.getElementById("loginSection").style.display =
-                        "none";
-                    document.getElementById("adminPanel").style.display =
-                        "block";
+                    document.getElementById("loginSection").style.display = "none";
+                    document.getElementById("adminPanel").style.display = "block";
                     document.getElementById("senhaAdmin").value = "";
-                    carregarProdutosLista();
+                    iniciarListenerProdutos();
                 } else {
                     alert("❌ Incorrect password!");
                     document.getElementById("senhaAdmin").value = "";
                 }
             }
 
-            // Admin Logout
             function logoutAdmin() {
                 if (confirm("Do you want to exit the admin panel?")) {
+                    // Para o listener em tempo real
+                    if (unsubscribeProdutos) unsubscribeProdutos();
+
                     localStorage.removeItem("adminLogado");
-                    document.getElementById("loginSection").style.display =
-                        "block";
-                    document.getElementById("adminPanel").style.display =
-                        "none";
+                    document.getElementById("loginSection").style.display = "block";
+                    document.getElementById("adminPanel").style.display = "none";
                     document.getElementById("formProduto").reset();
                     document.getElementById("senhaAdmin").focus();
                     imagemUploadada = null;
@@ -723,153 +802,157 @@
                 }
             }
 
-            // Add Product
-            function adicionarProdutoAdmin(event) {
-                event.preventDefault();
+            // ============================================================
+            // 🔥 FIRESTORE: listener em tempo real para lista de produtos
+            // ============================================================
+            function iniciarListenerProdutos() {
+                const lista = document.getElementById("produtosList");
+                lista.innerHTML = '<p style="text-align:center;color:#999;">Loading...</p>';
 
-                // Validate if image was selected
-                if (!imagemUploadada) {
-                    document.getElementById("errorMessage").style.display =
-                        "block";
-                    document.getElementById("errorMessage").textContent =
-                        "❌ Select an image for the product!";
-                    return;
-                }
-
-                // Collect selected sizes
-                const tamanhos = Array.from(
-                    document.querySelectorAll('input[name="tamanho"]:checked'),
-                ).map((el) => el.value);
-
-                if (tamanhos.length === 0) {
-                    document.getElementById("errorMessage").style.display =
-                        "block";
-                    document.getElementById("errorMessage").textContent =
-                        "❌ Select at least one size!";
-                    return;
-                }
-
-                // Create product object
-                const novoProduto = {
-                    id: Math.max(...produtos.map((p) => p.id), 0) + 1,
-                    nome: document.getElementById("nomeProduto").value,
-                    categoria:
-                        document.getElementById("categoriaProduto").value,
-                    preco: parseFloat(
-                        document.getElementById("precoProduto").value,
-                    ),
-                    imagem: imagemUploadada, // Use image in base64
-                    descricao:
-                        document.getElementById("descricaoProduto").value,
-                    cor: document.getElementById("corProduto").value,
-                    tamanhos: tamanhos,
-                    avaliacao: parseFloat(
-                        document.getElementById("avaliacaoProduto").value,
-                    ),
-                    badge:
-                        document.getElementById("badgeProduto").value || null,
-                };
-
-                // Validations
-                if (novoProduto.preco <= 0) {
-                    document.getElementById("errorMessage").style.display =
-                        "block";
-                    document.getElementById("errorMessage").textContent =
-                        "❌ Price must be greater than zero!";
-                    return;
-                }
-
-                if (novoProduto.avaliacao < 0 || novoProduto.avaliacao > 5) {
-                    document.getElementById("errorMessage").style.display =
-                        "block";
-                    document.getElementById("errorMessage").textContent =
-                        "❌ Rating must be between 0 and 5!";
-                    return;
-                }
-
-                // Add to array
-                produtos.push(novoProduto);
-
-                // Save to localStorage
-                localStorage.setItem(
-                    "produtosAdicionados",
-                    JSON.stringify(produtos),
-                );
-
-                // Show success message
-                document.getElementById("successMessage").style.display =
-                    "block";
-                document.getElementById("errorMessage").style.display = "none";
-                setTimeout(() => {
-                    document.getElementById("successMessage").style.display =
-                        "none";
-                }, 3000);
-
-                // Clear form
-                document.getElementById("formProduto").reset();
-                document.getElementById("tamanho-m").checked = true;
-                document.getElementById("imagemProduto").value = "";
-                imagemUploadada = null;
-                document.getElementById("imagePreview").innerHTML =
-                    '<div class="image-preview-empty">📸</div>';
-
-                // Reload list
-                carregarProdutosLista();
+                unsubscribeProdutos = produtosCollection
+                    .orderBy("criadoEm", "desc")
+                    .onSnapshot(
+                        (snapshot) => {
+                            setFirebaseStatus(true);
+                            renderizarListaProdutos(snapshot.docs);
+                        },
+                        (error) => {
+                            console.error("Firestore error:", error);
+                            setFirebaseStatus(false);
+                            lista.innerHTML = `<p style="color:#f44336;text-align:center;">❌ Error loading products: ${error.message}</p>`;
+                        }
+                    );
             }
 
-            // Load and display product list
-            function carregarProdutosLista() {
+            function renderizarListaProdutos(docs) {
                 const lista = document.getElementById("produtosList");
-                lista.innerHTML = "";
+                const contador = document.getElementById("contadorProdutos");
 
-                if (produtos.length === 0) {
-                    lista.innerHTML =
-                        '<p style="text-align: center; color: #999;">No products registered</p>';
+                contador.textContent = `(${docs.length} product${docs.length !== 1 ? "s" : ""})`;
+
+                if (docs.length === 0) {
+                    lista.innerHTML = '<p style="text-align:center;color:#999;">No products registered yet.</p>';
                     return;
                 }
 
-                produtos.forEach((produto) => {
+                lista.innerHTML = "";
+                docs.forEach((doc) => {
+                    const produto = doc.data();
+                    const docId = doc.id;
+
                     const item = document.createElement("div");
                     item.className = "produto-item";
+
+                    // Imagem: base64 ou emoji
+                    let imgHTML;
+                    if (produto.imagem && produto.imagem.startsWith("data:image")) {
+                        imgHTML = `<img src="${produto.imagem}" alt="${produto.nome}" style="width:100%;height:100%;object-fit:cover;">`;
+                    } else {
+                        imgHTML = `<span style="font-size:20px;">${produto.imagem || "🛍️"}</span>`;
+                    }
+
                     item.innerHTML = `
-                    <div style="display: flex; align-items: center;">
-                        <div style="width: 50px; height: 50px; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-right: 15px; overflow: hidden;">
-                            ${getImagemHTML(produto.imagem, "font-size: 20px;")}
+                        <div style="display:flex;align-items:center;gap:12px;flex:1;">
+                            <div style="width:50px;height:50px;background:#f9f9f9;border:1px solid #eee;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+                                ${imgHTML}
+                            </div>
+                            <div class="produto-item-info">
+                                <strong>${produto.nome}</strong><br>
+                                <small>ID: ${docId.slice(0,8)}... | ${produto.categoria} | R$ ${Number(produto.preco).toFixed(2)}</small><br>
+                                <small style="color:#666;">${(produto.tamanhos || []).join(", ")}${produto.badge ? ` · <b>${produto.badge}</b>` : ""}</small>
+                            </div>
                         </div>
-                        <div class="produto-item-info">
-                            <strong>${produto.nome}</strong><br>
-                            <small>ID: ${produto.id} | ${produto.categoria} | $ ${produto.preco.toFixed(2)}</small><br>
-                            <small style="color: #666;">${produto.tamanhos.join(", ")}</small>
-                        </div>
-                    </div>
-                    <button type="button" class="delete-btn" onclick="deletarProdutoAdmin(${produto.id})">🗑️ Remove</button>
-                `;
+                        <button type="button" class="delete-btn" onclick="deletarProduto('${docId}', '${produto.nome.replace(/'/g, "\\'")}')">🗑️ Remove</button>
+                    `;
                     lista.appendChild(item);
                 });
             }
 
-            // Delete Product
-            function deletarProdutoAdmin(id) {
-                if (confirm("Do you really want to remove this product?")) {
-                    const index = produtos.findIndex((p) => p.id === id);
-                    if (index > -1) {
-                        produtos.splice(index, 1);
-                        localStorage.setItem(
-                            "produtosAdicionados",
-                            JSON.stringify(produtos),
-                        );
-                        carregarProdutosLista();
-                        document.getElementById("successMessage").textContent =
-                            "✅ Product removed successfully!";
-                        document.getElementById(
-                            "successMessage",
-                        ).style.display = "block";
-                        setTimeout(() => {
-                            document.getElementById(
-                                "successMessage",
-                            ).style.display = "none";
-                        }, 3000);
-                    }
+            // ============================================================
+            // 🔥 FIRESTORE: adicionar produto
+            // ============================================================
+            async function adicionarProdutoAdmin(event) {
+                event.preventDefault();
+
+                if (!imagemUploadada) {
+                    showError("❌ Select an image for the product!");
+                    return;
+                }
+
+                const tamanhos = Array.from(
+                    document.querySelectorAll('input[name="tamanho"]:checked')
+                ).map((el) => el.value);
+
+                if (tamanhos.length === 0) {
+                    showError("❌ Select at least one size!");
+                    return;
+                }
+
+                const preco = parseFloat(document.getElementById("precoProduto").value);
+                const avaliacao = parseFloat(document.getElementById("avaliacaoProduto").value);
+
+                if (preco <= 0) {
+                    showError("❌ Price must be greater than zero!");
+                    return;
+                }
+
+                if (avaliacao < 0 || avaliacao > 5) {
+                    showError("❌ Rating must be between 0 and 5!");
+                    return;
+                }
+
+                const novoProduto = {
+                    nome: document.getElementById("nomeProduto").value.trim(),
+                    categoria: document.getElementById("categoriaProduto").value,
+                    preco: preco,
+                    imagem: imagemUploadada,
+                    descricao: document.getElementById("descricaoProduto").value.trim(),
+                    cor: document.getElementById("corProduto").value.trim(),
+                    tamanhos: tamanhos,
+                    avaliacao: avaliacao,
+                    badge: document.getElementById("badgeProduto").value || null,
+                    criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+
+                showLoading("Saving product to Firebase...");
+
+                try {
+                    await produtosCollection.add(novoProduto);
+
+                    showSuccess("✅ Product saved to Firebase successfully!");
+
+                    // Limpar formulário
+                    document.getElementById("formProduto").reset();
+                    document.getElementById("tamanho-m").checked = true;
+                    document.getElementById("imagemProduto").value = "";
+                    imagemUploadada = null;
+                    document.getElementById("imagePreview").innerHTML =
+                        '<div class="image-preview-empty">📸</div>';
+
+                } catch (error) {
+                    console.error("Error saving to Firestore:", error);
+                    showError("❌ Error saving product: " + error.message);
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            // ============================================================
+            // 🔥 FIRESTORE: deletar produto
+            // ============================================================
+            async function deletarProduto(docId, nome) {
+                if (!confirm(`Do you really want to remove "${nome}"?`)) return;
+
+                showLoading("Removing product...");
+
+                try {
+                    await produtosCollection.doc(docId).delete();
+                    showSuccess(`✅ "${nome}" removed successfully!`);
+                } catch (error) {
+                    console.error("Error deleting from Firestore:", error);
+                    showError("❌ Error removing product: " + error.message);
+                } finally {
+                    hideLoading();
                 }
             }
         </script>
