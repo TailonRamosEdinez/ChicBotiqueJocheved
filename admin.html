@@ -653,6 +653,7 @@
              ============================================================ -->
         <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 
         <script src="js/shared.js"></script>
 
@@ -674,12 +675,13 @@
             // Inicializar Firebase
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
+            const storage = firebase.storage();
             const produtosCollection = db.collection("produtos");
 
             // ============================================================
             // VARIÁVEIS GLOBAIS
             // ============================================================
-            let imagemUploadada = null;
+            let arquivoSelecionado = null; // File object para upload no Storage
             let unsubscribeProdutos = null; // listener em tempo real
 
             // ============================================================
@@ -747,13 +749,11 @@
                             return;
                         }
 
-                        const reader = new FileReader();
-                        reader.onload = function (event) {
-                            imagemUploadada = event.target.result;
-                            const preview = document.getElementById("imagePreview");
-                            preview.innerHTML = `<img src="${imagemUploadada}" alt="Preview">`;
-                        };
-                        reader.readAsDataURL(file);
+                        // Salvar o File para upload depois; preview local
+                        arquivoSelecionado = file;
+                        const preview = document.getElementById("imagePreview");
+                        const objectURL = URL.createObjectURL(file);
+                        preview.innerHTML = `<img src="${objectURL}" alt="Preview">`;
                     });
                 }
             });
@@ -843,9 +843,9 @@
                     const item = document.createElement("div");
                     item.className = "produto-item";
 
-                    // Imagem: base64 ou emoji
+                    // Imagem: URL do Storage ou emoji legado
                     let imgHTML;
-                    if (produto.imagem && produto.imagem.startsWith("data:image")) {
+                    if (produto.imagem && (produto.imagem.startsWith("http") || produto.imagem.startsWith("data:image"))) {
                         imgHTML = `<img src="${produto.imagem}" alt="${produto.nome}" style="width:100%;height:100%;object-fit:cover;">`;
                     } else {
                         imgHTML = `<span style="font-size:20px;">${produto.imagem || "🛍️"}</span>`;
@@ -874,7 +874,7 @@
             async function adicionarProdutoAdmin(event) {
                 event.preventDefault();
 
-                if (!imagemUploadada) {
+                if (!arquivoSelecionado) {
                     showError("❌ Select an image for the product!");
                     return;
                 }
@@ -901,37 +901,60 @@
                     return;
                 }
 
-                const novoProduto = {
-                    nome: document.getElementById("nomeProduto").value.trim(),
-                    categoria: document.getElementById("categoriaProduto").value,
-                    preco: preco,
-                    imagem: imagemUploadada,
-                    descricao: document.getElementById("descricaoProduto").value.trim(),
-                    cor: document.getElementById("corProduto").value.trim(),
-                    tamanhos: tamanhos,
-                    avaliacao: avaliacao,
-                    badge: document.getElementById("badgeProduto").value || null,
-                    criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
-                };
-
-                showLoading("Saving product to Firebase...");
+                showLoading("📤 Uploading image to Firebase Storage...");
 
                 try {
-                    await produtosCollection.add(novoProduto);
+                    // 1. Upload da imagem no Firebase Storage
+                    const nomeArquivo = `produtos/${Date.now()}_${arquivoSelecionado.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
+                    const storageRef = storage.ref(nomeArquivo);
 
-                    showSuccess("✅ Product saved to Firebase successfully!");
+                    const uploadTask = storageRef.put(arquivoSelecionado);
+
+                    // Progresso do upload
+                    await new Promise((resolve, reject) => {
+                        uploadTask.on(
+                            "state_changed",
+                            (snapshot) => {
+                                const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                                document.getElementById("loadingText").textContent = `📤 Uploading image... ${pct}%`;
+                            },
+                            reject,
+                            resolve
+                        );
+                    });
+
+                    // 2. Pegar URL pública da imagem
+                    const imagemURL = await storageRef.getDownloadURL();
+                    document.getElementById("loadingText").textContent = "💾 Saving product data...";
+
+                    // 3. Salvar produto no Firestore com a URL (não mais base64)
+                    const novoProduto = {
+                        nome: document.getElementById("nomeProduto").value.trim(),
+                        categoria: document.getElementById("categoriaProduto").value,
+                        preco: preco,
+                        imagem: imagemURL,
+                        descricao: document.getElementById("descricaoProduto").value.trim(),
+                        cor: document.getElementById("corProduto").value.trim(),
+                        tamanhos: tamanhos,
+                        avaliacao: avaliacao,
+                        badge: document.getElementById("badgeProduto").value || null,
+                        criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+                    };
+
+                    await produtosCollection.add(novoProduto);
+                    showSuccess("✅ Product saved successfully!");
 
                     // Limpar formulário
                     document.getElementById("formProduto").reset();
                     document.getElementById("tamanho-m").checked = true;
                     document.getElementById("imagemProduto").value = "";
-                    imagemUploadada = null;
+                    arquivoSelecionado = null;
                     document.getElementById("imagePreview").innerHTML =
                         '<div class="image-preview-empty">📸</div>';
 
                 } catch (error) {
-                    console.error("Error saving to Firestore:", error);
-                    showError("❌ Error saving product: " + error.message);
+                    console.error("Error saving product:", error);
+                    showError("❌ Error: " + error.message);
                 } finally {
                     hideLoading();
                 }
@@ -946,10 +969,25 @@
                 showLoading("Removing product...");
 
                 try {
+                    // Buscar URL da imagem antes de deletar
+                    const doc = await produtosCollection.doc(docId).get();
+                    const imagemURL = doc.exists ? doc.data().imagem : null;
+
+                    // Deletar do Firestore
                     await produtosCollection.doc(docId).delete();
+
+                    // Deletar imagem do Storage (se for URL do Firebase Storage)
+                    if (imagemURL && imagemURL.includes("firebasestorage.googleapis.com")) {
+                        try {
+                            await storage.refFromURL(imagemURL).delete();
+                        } catch (storageErr) {
+                            console.warn("Could not delete image from Storage:", storageErr.message);
+                        }
+                    }
+
                     showSuccess(`✅ "${nome}" removed successfully!`);
                 } catch (error) {
-                    console.error("Error deleting from Firestore:", error);
+                    console.error("Error deleting product:", error);
                     showError("❌ Error removing product: " + error.message);
                 } finally {
                     hideLoading();
